@@ -1,20 +1,23 @@
 package stats
 
-import(
-	"github.com/Akbarhub/types/pkg/bank/types"
+import (
+	"github.com/Akbarhub/types/v2/pkg/bank/types"
 )
 
 // Avg рассчитывает среднюю сумму платежа.
 func Avg(payments []types.Payment) types.Money{
-	AverageSum := int64(0)
-	Aveg := len(payments)
-	for _, payment := range payments {
-		AverageSum += int64(payment.Amount)
-		
-	}
-	AverageSum = AverageSum / int64(Aveg)
-		return types.Money(AverageSum)	
+	avaregeSum := types.Money(0)
 	
+	i := types.Money(0)
+
+	for _, payment := range payments {
+		if payment.Status != types.StatusFail {
+			i++
+			avaregeSum += payment.Amount
+		}
+	}
+		avaregeSum = avaregeSum / i
+	return types.Money(avaregeSum)
 }
 
 // TotalInCategory находит сумму пакупок в определённой категории.
@@ -23,9 +26,12 @@ func TotalInCategory(payments []types.Payment, category types.Category) types.Mo
 	totall := types.Money(0)
 
 	for _, payment := range payments {
+		if payment.Status == types.StatusFail {
+			continue
+		}
 		if payment.Category == category{
 			totall += payment.Amount
 		}
 	}
-	return totall
+		return totall
 }
