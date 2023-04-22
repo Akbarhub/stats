@@ -3,7 +3,6 @@ package stats
 import (
 	"reflect"
 	"testing"
-
 	"github.com/Akbarhub/types/v2/pkg/bank/types"
 )
 
